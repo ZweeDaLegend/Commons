@@ -5,6 +5,7 @@ import me.zwee.commons.utils.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -16,7 +17,6 @@ public class ConfigManager {
 
     private final static Map<String, Config> configs = new HashMap<>();
 
-//    private final static Plugin p = Commons.getPlugin(Commons.class);
     private static JavaPlugin p;
 
     public ConfigManager(JavaPlugin plugin) {
@@ -29,10 +29,8 @@ public class ConfigManager {
             if (!p.getDataFolder().exists()) {
                 p.getDataFolder().mkdir();
             }
-
             for(String string : configFiles){ configs.put(string, new Config(string)); }
     }
-
 
     public static void ReloadConfigs(){
         p.reloadConfig();
@@ -45,12 +43,10 @@ public class ConfigManager {
     }
     
 
-    public static void loadRegularConfig(){
+    public static void loadRegularConfig(JavaPlugin p){
         p.getConfig().options().copyDefaults(true);
         p.saveDefaultConfig();
-//        p.saveConfig();
     }
-
 
     public static class Config {
         private FileConfiguration config;
