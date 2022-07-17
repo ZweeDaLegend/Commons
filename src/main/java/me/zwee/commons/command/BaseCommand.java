@@ -3,7 +3,9 @@ package me.zwee.commons.command;
 import com.sun.istack.internal.Nullable;
 import jdk.nashorn.internal.objects.annotations.Getter;
 import jdk.nashorn.internal.objects.annotations.Setter;
+import me.zwee.commons.utils.Colour;
 import me.zwee.commons.utils.Messages;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -40,18 +42,13 @@ public abstract class BaseCommand extends Command {
             ArrayList<String> a = new ArrayList<>(Arrays.asList(args));
             a.remove(0);
             args = a.toArray(new String[0]);
-            try {
                 if(subCommand.permission() == null || !(sender instanceof Player) || sender.hasPermission(subCommand.permission())){
                     subCommand.onCommand(sender, args);
-                }else{
-                    sender.sendMessage(Messages.getMessage("NO_PERMISSION"));
+                    return true;
                 }
-            } catch (Exception ignored) {
             }
-            }
-            else{
-            sender.sendMessage(Messages.getMessage("NO_PERMISSION"));
-        }
+            sender.sendMessage(Messages.getMessage("NO_PERMISSION").equals("")
+                    ? Colour.colour("&4You do not have permission to use that command!") : Messages.getMessage("NO_PERMISSION"));
         return true;
     }
 
@@ -63,11 +60,9 @@ public abstract class BaseCommand extends Command {
             if (cmdName.equalsIgnoreCase(subcommandName)) {
                 return cmd;
             }
-            String[] args;
-            int argLength = (args = cmd.aliases()).length;
+            String[] args = cmd.aliases();
 
-            for (int index = 0; index < argLength; ++index) {
-                String alias = args[index];
+            for (String alias : args) {
                 if (subcommandName.equalsIgnoreCase(alias)) {
                     return cmd;
                 }
@@ -84,23 +79,4 @@ public abstract class BaseCommand extends Command {
     public abstract String[] aliases();
 
     public abstract String permission();
-
-    //    @Override
-//    public abstract void setPermission(@Nullable String permission);
-
-
-
-//    public boolean setName(@NotNull String name) {
-//        if (!isRegistered()) {
-//            this.commandName = (name == null) ? "" : name;
-//            return true;
-//        }
-//        return false;
-//    }
-
-
-//    public abstract List<SubCommand> subCommandList();
-
-
-
 }
