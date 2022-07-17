@@ -1,6 +1,7 @@
 package me.zwee.commons.utils;
 
 import me.zwee.commons.config.ConfigManager;
+import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,7 +45,7 @@ public class Messages {
 
     public static String getMessage(String messageName) {
         if (messages.get(messageName) == null) {
-            System.out.print("Missing message in message.yml");
+            System.out.print("Missing message \""+ messageName +"\" in message.yml");
             return "";
         }
         return Colour.colour(messages.get(messageName));
